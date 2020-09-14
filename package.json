@@ -1,0 +1,52 @@
+{
+  "name": "sudoku-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_PATH=./lib/client pm2 start lib/server --watch --interpreter babel-node",
+    "pm2-delete": "pm2 delete all",
+    "webpack": "webpack -wd",
+    "build-node": "babel lib -d build --copy-files",
+    "build-webpack": "webpack -p",
+    "start": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp",
+    "prod": "concurrently \"npm run build-node\" \"npm run build-webpack\""
+  },
+  "babel": {
+    "presets": [
+      "react",
+      [
+        "env",
+        {
+          "targets:": {
+            "node": "current"
+          }
+        }
+      ],
+      "stage-2"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "7.0.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "concurrently": "^5.3.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "pm2": "^4.4.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.1",
+    "webpack": "^4.44.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
