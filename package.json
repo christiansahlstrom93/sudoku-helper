@@ -9,7 +9,8 @@
     "webpack": "webpack -wd",
     "build-node": "babel lib -d build --copy-files",
     "build-webpack": "webpack -p",
-    "start": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp",
+    "start-prod": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp",
+    "start": "concurrently \"npm run build-node\" \"npm run build-webpack\" \"npm run start-prod\"",
     "prod": "concurrently \"npm run build-node\" \"npm run build-webpack\""
   },
   "babel": {
