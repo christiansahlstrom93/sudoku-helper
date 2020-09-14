@@ -9,9 +9,9 @@
     "webpack": "webpack -wd",
     "build-node": "babel lib -d build --copy-files",
     "build-webpack": "webpack -p",
-    "start-prod": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp",
-    "start": "concurrently \"npm run build-node\" \"npm run build-webpack\" \"npm run start-prod\"",
-    "prod": "concurrently \"npm run build-node\" \"npm run build-webpack\""
+    "start": "concurrently \"npm run build-prod\" \"npm run start-prod\"",
+    "build-prod": "concurrently \"npm run build-node\" \"npm run build-webpack\"",
+    "start-prod": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp"
   },
   "babel": {
     "presets": [
@@ -31,12 +31,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.20.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "7.0.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "body-parser": "^1.19.0",
     "concurrently": "^5.3.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
