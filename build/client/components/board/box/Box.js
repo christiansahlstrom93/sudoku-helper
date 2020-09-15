@@ -15,15 +15,11 @@ var _styles2 = _interopRequireDefault(_styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Box = exports.Box = function Box(props) {
-    return _react2.default.createElement('input', {
-        type: 'number',
-        min: '0',
-        max: '9',
-        style: _styles2.default.input,
-        value: props.value,
-        onChange: function onChange(e) {
-            return props.onValueChange({ value: e.target.value, index: props.index });
-        }
-    });
-};
+const Box = exports.Box = props => _react2.default.createElement('input', {
+    type: 'number',
+    min: '0',
+    max: '9',
+    style: _styles2.default.input,
+    value: props.value,
+    onChange: e => props.onValueChange({ value: e.target.value, rowIndex: props.rowIndex, columnIndex: props.columnIndex })
+});

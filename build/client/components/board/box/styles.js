@@ -3,12 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var styles = {
+const styles = {
     input: {
         height: '40px',
         width: '40px',
         border: 0,
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingLeft: '10px',
+        fontSize: '16px'
     }
 };
 

@@ -15,7 +15,7 @@ module.exports = {
       },
       sourceType: 'module',
     },
-    plugins: ['react'],
+    plugins: ['react', 'react-hooks'],
     rules: {
       'react/prop-types': ['off'],
       'react/display-name': ['off'],
@@ -35,5 +35,7 @@ module.exports = {
       strict: 'error',
       'symbol-description': 'error',
       yoda: ['error', 'never', {exceptRange: true}],
+      "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+      "react-hooks/exhaustive-deps": "warn" 
     },
   };

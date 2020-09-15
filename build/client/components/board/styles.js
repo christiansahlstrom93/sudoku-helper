@@ -3,18 +3,55 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var styles = {
+const styles = {
+    board: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     container: {
         display: 'flex',
         flexDirection: 'column'
     },
-    grid: {
-        display: 'grid',
-        gridTemplateColumns: 'auto auto auto',
-        padding: '4px'
+    row: {
+        display: 'flex'
     },
-    gridContainer: {
-        padding: '0 4px'
+    box: {
+        border: '1px solid black',
+        padding: '18px'
+    },
+    button: {
+        backgroundColor: 'white',
+        color: 'black',
+        border: '2px solid #4CAF50',
+        cursor: 'pointer',
+        marginTop: '12px',
+        padding: '12px',
+        width: '160px',
+        height: '60px'
+    },
+    buttonHover: {
+        marginTop: '12px',
+        padding: '12px',
+        width: '160px',
+        height: '60px',
+        cursor: 'pointer',
+        backgroundColor: '#4CAF50',
+        border: '2px solid #4CAF50',
+        color: 'white'
+    },
+    buttonContainer: {
+        display: 'flex',
+        flex: 1
+    },
+    loadingText: {
+        padding: '8px 8px 0 0',
+        color: '#4CAF50'
+    },
+    errorText: {
+        padding: '8px 8px 0 0',
+        color: '#d00000'
     }
 };
 

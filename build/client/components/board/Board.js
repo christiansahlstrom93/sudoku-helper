@@ -5,17 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Board = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _api = require('../../api');
+var _reactRedux = require('react-redux');
 
-var _api2 = _interopRequireDefault(_api);
+var _reselect = require('reselect');
 
-var _Row = require('./row/Row');
+var _sudukoActions = require('../../actions/sudukoActions');
+
+var _Box = require('./box/Box');
 
 var _styles = require('./styles');
 
@@ -23,104 +23,88 @@ var _styles2 = _interopRequireDefault(_styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+const getSudoku = (0, _reselect.createSelector)(state => state.sudoku, sudoku => sudoku);
+const getIsFetching = (0, _reselect.createSelector)(state => state.fetching, fetching => fetching);
+const getHasErrors = (0, _reselect.createSelector)(state => state.error, error => error);
 
-var initialData = [[[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]];
+const Board = exports.Board = () => {
+    const sudoku = (0, _reactRedux.useSelector)(getSudoku, _reactRedux.shallowEqual);
+    const isFetching = (0, _reactRedux.useSelector)(getIsFetching, _reactRedux.shallowEqual);
+    const hasErrors = (0, _reactRedux.useSelector)(getHasErrors, _reactRedux.shallowEqual);
+    const dispatch = (0, _reactRedux.useDispatch)();
+    const [mouseHover, setMouseHover] = (0, _react.useState)(false);
 
-var Board = exports.Board = function Board() {
-    var _useState = (0, _react.useState)(),
-        _useState2 = _slicedToArray(_useState, 2),
-        values = _useState2[0],
-        setValues = _useState2[1];
-
-    (0, _react.useEffect)(function () {
-        if (!values) {
-            initValues();
+    const getSeparator = (index, style) => {
+        if (index % 3 === 0) {
+            return _react2.default.createElement('div', { style: style });
         }
-    }, [values]);
-
-    var initValues = function initValues() {
-        setValues(initialData);
-    };
-
-    var calculate = function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-            var correctedSuduko;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.next = 2;
-                            return _api2.default.post('/calculate', { data: values.flat(1) });
-
-                        case 2:
-                            correctedSuduko = _context.sent;
-
-                            console.log(correctedSuduko);
-                            setValues(correctedSuduko);
-
-                        case 5:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, _callee, undefined);
-        }));
-
-        return function calculate() {
-            return _ref.apply(this, arguments);
-        };
-    }();
-
-    var updateValues = function updateValues(data) {
-        setValues(function (prevRows) {
-            return prevRows.map(function (row, rowIndex) {
-                if (rowIndex === data.rowIndex) {
-                    return row.map(function (column, columnIndex) {
-                        if (columnIndex === data.columnIndex) {
-                            return column.map(function (tuple, idx) {
-                                return idx === data.boxIndex ? data.value : tuple;
-                            });
-                        }
-                        return column;
-                    });
-                }
-                return row;
-            });
-        });
-    };
-
-    if (!values) {
         return null;
-    }
+    };
+
+    const getStatusMessage = () => {
+        if (isFetching) {
+            return _react2.default.createElement(
+                'div',
+                { style: _styles2.default.loadingText },
+                'Calculating, please wait...'
+            );
+        } else if (hasErrors) {
+            return _react2.default.createElement(
+                'div',
+                { style: _styles2.default.errorText },
+                'Something went wrong, please try again or change the numbers'
+            );
+        }
+
+        return null;
+    };
 
     return _react2.default.createElement(
         'div',
-        { style: _styles2.default.container },
-        values.map(function (rows, rowIndex) {
-            return _react2.default.createElement(
-                'div',
-                { key: rowIndex, style: _styles2.default.grid },
-                rows.map(function (row, columnIndex) {
-                    return _react2.default.createElement(
-                        'div',
-                        { key: columnIndex, style: _styles2.default.gridContainer },
-                        _react2.default.createElement(_Row.Row, {
-                            updateValues: updateValues,
-                            row: row,
-                            boardRow: rowIndex,
-                            boardColumn: columnIndex
-                        })
-                    );
-                })
-            );
-        }),
+        { style: _styles2.default.board },
         _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                    return calculate();
-                } },
-            'Submit'
+            'div',
+            { style: _styles2.default.container },
+            sudoku.map((row, idx) => _react2.default.createElement(
+                'div',
+                { key: idx, className: 'separator' },
+                getSeparator(idx, { paddingBottom: '8px' }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row', style: _styles2.default.row },
+                    row.map((boxValue, index) => _react2.default.createElement(
+                        _react2.default.Fragment,
+                        { key: index },
+                        getSeparator(index, { paddingRight: '8px' }),
+                        _react2.default.createElement(
+                            'div',
+                            { style: _styles2.default.box },
+                            _react2.default.createElement(_Box.Box, {
+                                value: boxValue,
+                                rowIndex: idx,
+                                columnIndex: index,
+                                onValueChange: data => dispatch((0, _sudukoActions.addNumber)(data))
+                            })
+                        )
+                    ))
+                )
+            ))
+        ),
+        getStatusMessage(),
+        _react2.default.createElement(
+            'div',
+            { style: _styles2.default.buttonContainer },
+            _react2.default.createElement(
+                'button',
+                {
+                    disabled: isFetching,
+                    style: mouseHover ? _styles2.default.buttonHover : _styles2.default.button,
+                    onClick: () => (0, _sudukoActions.calculate)(dispatch, sudoku),
+                    onMouseEnter: () => setMouseHover(true),
+                    onMouseLeave: () => setMouseHover(false)
+                },
+                'Calculate'
+            )
         )
     );
 };

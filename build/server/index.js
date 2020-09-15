@@ -20,7 +20,7 @@ var _serverRenderer = require('./serverRenderer');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = (0, _express2.default)();
+const app = (0, _express2.default)();
 
 app.use(_express2.default.static('public'));
 app.set('view engine', 'ejs');
@@ -28,10 +28,10 @@ app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
 app.use('/api', _api2.default);
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.render('index', { component: (0, _serverRenderer.renderIndex)() });
 });
 
-app.listen(_config2.default.port, function () {
-    console.info('App is listenig to ' + _config2.default.port);
+app.listen(_config2.default.port, () => {
+    console.info(`App is listenig to ${_config2.default.port}`);
 });

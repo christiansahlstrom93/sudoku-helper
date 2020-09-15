@@ -17,6 +17,4 @@ var _App = require('components/App');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var renderIndex = exports.renderIndex = function renderIndex() {
-  return _server2.default.renderToString(_react2.default.createElement(_App.App, null));
-};
+const renderIndex = exports.renderIndex = () => _server2.default.renderToString(_react2.default.createElement(_App.App, null));
