@@ -9,7 +9,7 @@
     "webpack": "webpack -wd",
     "build-node": "babel lib -d build --copy-files",
     "build-webpack": "webpack -p",
-    "start": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server/index.js -i max --name sudokuApp",
+    "start": "NODE_ENV=production NODE_PATH=./build/client pm2-runtime start ecosystem.config.js --env production",
     "build": "concurrently \"npm run build-node\" \"npm run build-webpack\""
   },
   "heroku-run-build-script": true,
