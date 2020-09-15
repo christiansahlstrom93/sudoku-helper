@@ -9,10 +9,10 @@
     "webpack": "webpack -wd",
     "build-node": "babel lib -d build --copy-files",
     "build-webpack": "webpack -p",
-    "start": "concurrently \"npm run build-prod\" \"npm run start-prod\"",
-    "build-prod": "concurrently \"npm run build-node\" \"npm run build-webpack\"",
-    "start-prod": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server -i max --name sudokuApp"
+    "start": "NODE_ENV=production NODE_PATH=./build/client pm2 start build/server/index.js -i max --name sudokuApp",
+    "build": "concurrently \"npm run build-node\" \"npm run build-webpack\""
   },
+  "heroku-run-build-script": true,
   "babel": {
     "presets": [
       "react",
